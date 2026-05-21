@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Professional Digital Card</title>
+
+  <meta name="theme-color" content="#f97316">
+
+  <link rel="manifest" href="manifest.json">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Professional Card">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --black: #111111;
+      --orange: #f97316;
+      --orange-dark: #c2410c;
+      --orange-light: #fb923c;
+      --white: #ffffff;
+      --text: #1f2937;
+      --muted: #5b6472;
+      --line: #e5e7eb;
+      --save: #f97316;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(249,115,22,0.22), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(17,17,17,0.12), transparent 32%),
+        linear-gradient(180deg, #fff7ed 0%, #ffffff 52%, #ffedd5 100%);
+      color: var(--text);
+    }
+
+    body {
+      padding-bottom: 92px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.98);
+      box-shadow: 0 0 40px rgba(0,0,0,0.14);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .cover {
+      height: 182px;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255,255,255,0.16), transparent 24%),
+        radial-gradient(circle at 82% 14%, rgba(255,255,255,0.12), transparent 24%),
+        linear-gradient(135deg, #7c2d12 0%, #ea580c 50%, #fb923c 100%);
+      position: relative;
+      overflow: visible;
+    }
+
+    .cover::after {
+      content: "";
+      position: absolute;
+      left: -14%;
+      width: 128%;
+      bottom: -78px;
+      height: 145px;
+      background: #ffffff;
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    .package-badge {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 30px;
+      padding: 0 18px;
+      border-radius: 999px;
+      background: #111111;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.8px;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.18);
+      z-index: 3;
+      white-space: nowrap;
+    }
+
+    .profile-wrap {
+      width: 144px;
+      height: 144px;
+      border-radius: 50%;
+      background: #ffffff;
+      box-shadow: 0 18px 36px rgba(0,0,0,0.18);
+      border: 5px solid #ffffff;
+      position: absolute;
+      left: 50%;
+      bottom: -72px;
+      transform: translateX(-50%);
+      z-index: 4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 18px;
+    }
+
+    .profile-placeholder {
+      color: #374151;
+      font-size: 14px;
+      line-height: 1.35;
+      font-weight: 800;
+    }
+
+    .hero {
+      padding: 94px 20px 24px;
+      text-align: center;
+      background:
+        radial-gradient(circle at top left, rgba(249,115,22,0.10), transparent 32%),
+        linear-gradient(180deg, #ffffff, #fff7ed);
+      border-bottom: 1px solid var(--line);
+      position: relative;
+      z-index: 2;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 31px;
+      line-height: 1.08;
+      font-weight: 900;
+      color: var(--black);
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+      margin: 10px auto 0;
+      max-width: 360px;
+      font-size: 15.5px;
+      line-height: 1.45;
+      color: #4b5563;
+      font-weight: 800;
+    }
+
+    .description {
+      margin: 12px auto 0;
+      max-width: 365px;
+      font-size: 14.5px;
+      line-height: 1.55;
+      color: #5b6472;
+      font-weight: 700;
+    }
+
+    .orange-line {
+      width: 86px;
+      height: 4px;
+      border-radius: 999px;
+      margin: 17px auto 0;
+      background: linear-gradient(90deg, transparent, var(--orange), transparent);
+    }
+
+    .share-row {
+      padding: 18px 18px 5px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 11px;
+    }
+
+    .share-btn,
+    .save-contact-btn {
+      min-height: 48px;
+      border-radius: 15px;
+      border: 1px solid rgba(0,0,0,0.06);
+      background: linear-gradient(135deg, #ffffff, #fff7ed);
+      color: var(--black);
+      font-size: 14px;
+      font-weight: 900;
+      font-family: Arial, Helvetica, sans-serif;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .share-btn svg,
+    .save-contact-btn svg {
+      width: 19px;
+      height: 19px;
+      stroke: var(--black);
+      fill: none;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .main-actions {
+      padding: 14px 18px 24px;
+      display: grid;
+      gap: 13px;
+    }
+
+    .main-btn {
+      width: 100%;
+      min-height: 60px;
+      border-radius: 16px;
+      text-decoration: none;
+      display: grid;
+      grid-template-columns: 42px 1fr 22px;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px;
+      box-shadow: 0 12px 26px rgba(0,0,0,0.14);
+      font-weight: 900;
+      font-size: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .main-btn.site {
+      background: linear-gradient(135deg, #111111, #2d2d2d);
+      color: #ffffff;
+      border: 2px solid var(--orange);
+    }
+
+    .main-btn.review {
+      min-height: 78px;
+      background:
+        radial-gradient(circle at 88% 22%, rgba(0,0,0,0.12) 0 10%, transparent 11%),
+        radial-gradient(circle at 80% 48%, rgba(0,0,0,0.12) 0 8%, transparent 9%),
+        linear-gradient(135deg, #fb923c, #f97316);
+      color: #111111;
+      grid-template-columns: 48px 1fr 22px;
+      border: 2px solid #111111;
+    }
+
+    .main-btn.map {
+      background:
+        radial-gradient(circle at 88% 22%, rgba(249,115,22,0.22) 0 10%, transparent 11%),
+        linear-gradient(135deg, #ffffff, #fff7ed);
+      color: #111111;
+      border: 2px solid var(--orange);
+    }
+
+    .btn-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.14);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .site .btn-icon {
+      background: rgba(249,115,22,0.18);
+    }
+
+    .review .btn-icon,
+    .map .btn-icon {
+      background: rgba(17,17,17,0.08);
+    }
+
+    .btn-icon svg {
+      width: 21px;
+      height: 21px;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    .site .btn-icon svg {
+      stroke: #ffffff;
+    }
+
+    .review .btn-icon svg,
+    .map .btn-icon svg {
+      stroke: #111111;
+    }
+
+    .btn-icon.star {
+      color: #111111;
+      font-size: 24px;
+      font-weight: 900;
+      background: rgba(17,17,17,0.10);
+    }
+
+    .review-text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      line-height: 1.15;
+    }
+
+    .review-text strong {
+      font-size: 18px;
+    }
+
+    .stars {
+      color: #111111;
+      font-size: 15px;
+      letter-spacing: 1.5px;
+    }
+
+    .btn-arrow {
+      font-size: 26px;
+      text-align: right;
+      font-weight: 900;
+    }
+
+    .site .btn-arrow {
+      color: #ffffff;
+    }
+
+    .review .btn-arrow,
+    .map .btn-arrow {
+      color: #111111;
+    }
+
+    .social-section {
+      padding: 0 18px 24px;
+      text-align: center;
+    }
+
+    .social-title {
+      margin: 0;
+      font-size: 20px;
+      color: var(--black);
+      font-weight: 900;
+    }
+
+    .social-subtitle {
+      margin: 7px auto 16px;
+      max-width: 360px;
+      color: #5b6472;
+      font-size: 14px;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+
+    .quick-contact {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 13px 10px;
+    }
+
+    .circle-btn {
+      text-decoration: none;
+      color: var(--black);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 7px;
+      font-size: 10.5px;
+      font-weight: 900;
+      min-width: 0;
+      text-align: center;
+    }
+
+    .circle-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.16);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .circle-icon::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 28% 30%, rgba(255,255,255,0.14) 0 12%, transparent 13%),
+        radial-gradient(circle at 72% 70%, rgba(255,255,255,0.10) 0 10%, transparent 11%);
+      pointer-events: none;
+    }
+
+    .circle-icon.black {
+      background: linear-gradient(135deg, #0f0f0f, #2a2a2a);
+    }
+
+    .circle-icon.orange {
+      background: linear-gradient(135deg, #ea580c, #fb923c);
+    }
+
+    .circle-icon.mixed {
+      background: linear-gradient(135deg, #111111 0%, #111111 45%, #f97316 100%);
+    }
+
+    .circle-icon.mail {
+      background: linear-gradient(135deg, #ffffff, #fb923c);
+      border: 2px solid #111111;
+    }
+
+    .circle-icon svg {
+      width: 23px;
+      height: 23px;
+      stroke: #ffffff;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      position: relative;
+      z-index: 1;
+    }
+
+    .circle-icon.mail svg {
+      stroke: #111111;
+    }
+
+    .info-section {
+      padding: 0 18px 24px;
+    }
+
+    .info-card {
+      background:
+        radial-gradient(circle at top right, rgba(249,115,22,0.12), transparent 28%),
+        #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: 0 12px 26px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .info-card h2 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      color: var(--black);
+      font-weight: 900;
+    }
+
+    .info-card p {
+      margin: 0;
+      font-size: 14.5px;
+      color: #4b5563;
+      line-height: 1.55;
+      font-weight: 700;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 0 18px 30px;
+      color: #7a8596;
+      font-size: 11.5px;
+      line-height: 1.5;
+    }
+
+    .footer a {
+      color: var(--orange-dark);
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .client-cta {
+      margin: 14px auto 0;
+      max-width: 310px;
+      min-height: 42px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, #fb923c, #f97316);
+      color: #ffffff !important;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12.7px;
+      font-weight: 900;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+      padding: 0 14px;
+    }
+
+    .install-bar {
+      position: fixed;
+      left: 50%;
+      bottom: 14px;
+      transform: translateX(-50%);
+      width: calc(100% - 28px);
+      max-width: 410px;
+      z-index: 9999;
+    }
+
+    .install-btn {
+      width: 100%;
+      min-height: 58px;
+      border: 0;
+      border-radius: 16px;
+      background: var(--save);
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 900;
+      box-shadow: 0 14px 30px rgba(0,0,0,0.24);
+      cursor: pointer;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: rgba(0,0,0,0.64);
+      padding: 20px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 380px;
+      background: #ffffff;
+      border-radius: 22px;
+      padding: 24px 20px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    }
+
+    .modal-box h2 {
+      margin: 0 0 12px;
+      color: var(--black);
+      font-size: 23px;
+    }
+
+    .modal-box p {
+      margin: 0;
+      color: #3f4a5e;
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .ios-steps {
+      display: none;
+      margin-top: 14px;
+      text-align: left;
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: 14px;
+      padding: 13px;
+      color: #374151;
+      font-size: 14px;
+      line-height: 1.5;
+      font-weight: 700;
+    }
+
+    .ios-steps strong {
+      color: var(--black);
+    }
+
+    .modal-action {
+      width: 100%;
+      min-height: 48px;
+      border: 0;
+      border-radius: 12px;
+      margin-top: 12px;
+      background: linear-gradient(135deg, #111111, #333333);
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .modal-action.orange {
+      background: linear-gradient(135deg, #fb923c, #f97316);
+    }
+
+    .modal-action.secondary {
+      min-height: 42px;
+      font-size: 13.5px;
+      background: #f3f4f6;
+      color: #111827;
+      border: 1px solid #e5e7eb;
+    }
+
+    .close-btn {
+      width: 100%;
+      min-height: 44px;
+      border: 0;
+      border-radius: 12px;
+      margin-top: 10px;
+      background: #111827;
+      color: #ffffff;
+      font-size: 14.5px;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    @media (max-width: 390px) {
+      .cover {
+        height: 172px;
+      }
+
+      .cover::after {
+        bottom: -72px;
+        height: 132px;
+      }
+
+      .profile-wrap {
+        width: 136px;
+        height: 136px;
+        bottom: -68px;
+      }
+
+      .hero {
+        padding-top: 88px;
+      }
+
+      .quick-contact {
+        gap: 12px 8px;
+      }
+
+      .circle-icon {
+        width: 46px;
+        height: 46px;
+      }
+
+      .circle-btn {
+        font-size: 9.8px;
+      }
+
+      h1 {
+        font-size: 29px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+
+    <section class="cover">
+      <div class="package-badge">PROFESSIONAL DIGITAL CARD</div>
+      <div class="profile-wrap">
+        <div class="profile-placeholder">Φωτογραφία προφίλ</div>
+      </div>
+    </section>
+
+    <section class="hero">
+      <h1>Όνομα Επιχείρησης</h1>
+
+      <p class="subtitle">
+        Σύντομη περιγραφή της επιχείρησης ή του επαγγελματία.
+      </p>
+
+      <p class="description">
+        Επαγγελματική ψηφιακή κάρτα με άμεση επικοινωνία, social media, website, Google Review και τοποθεσία.
+      </p>
+
+      <div class="orange-line"></div>
+    </section>
+
+    <section class="share-row">
+      <button class="share-btn" onclick="shareProfile()">
+        <svg viewBox="0 0 24 24">
+          <circle cx="18" cy="5" r="3"></circle>
+          <circle cx="6" cy="12" r="3"></circle>
+          <circle cx="18" cy="19" r="3"></circle>
+          <path d="M8.6 10.8l6.8-4.6"></path>
+          <path d="M8.6 13.2l6.8 4.6"></path>
+        </svg>
+        Share
+      </button>
+
+      <button class="save-contact-btn" onclick="downloadVCard()">
+        <svg viewBox="0 0 24 24">
+          <path d="M16 21v-2a4 4 0 0 0-8 0v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+          <path d="M19 8v6"></path>
+          <path d="M22 11h-6"></path>
+        </svg>
+        Επαφή
+      </button>
+    </section>
+
+    <section class="main-actions">
+
+      <a class="main-btn site" href="https://example.com" target="_self">
+        <span class="btn-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M2 12h20"></path>
+            <path d="M12 2a15.3 15.3 0 0 1 0 20"></path>
+            <path d="M12 2a15.3 15.3 0 0 0 0 20"></path>
+          </svg>
+        </span>
+        <span>Επισκέψου το site</span>
+        <span class="btn-arrow">›</span>
+      </a>
+
+      <a class="main-btn review" href="https://search.google.com/local/writereview?placeid=PLACE_ID" target="_self">
+        <span class="btn-icon star">★</span>
+        <span class="review-text">
+          <strong>Άφησε Google Review</strong>
+          <span class="stars">★★★★★</span>
+        </span>
+        <span class="btn-arrow">›</span>
+      </a>
+
+      <a class="main-btn map" href="https://www.google.com/maps" target="_self">
+        <span class="btn-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"></path>
+            <circle cx="12" cy="10" r="2.5"></circle>
+          </svg>
+        </span>
+        <span>Βρες μας στο Google Map</span>
+        <span class="btn-arrow">›</span>
+      </a>
+
+    </section>
+
+    <section class="social-section">
+      <h2 class="social-title">Επικοινωνία & Social Links</h2>
+      <p class="social-subtitle">
+        Κάλεσε, στείλε μήνυμα ή ακολούθησέ μας στα social.
+      </p>
+
+      <div class="quick-contact">
+
+        <a class="circle-btn" href="tel:+306900000000">
+          <span class="circle-icon black">
+            <svg viewBox="0 0 24 24">
+              <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.7 19.7 0 0 1-8.6-3.1 19.2 19.2 0 0 1-5.9-5.9A19.7 19.7 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.7 2.6a2 2 0 0 1-.5 2.1L8 9.7a16 16 0 0 0 6.3 6.3l1.3-1.3a2 2 0 0 1 2.1-.5c.8.4 1.7.6 2.6.7A2 2 0 0 1 22 16.9z"></path>
+            </svg>
+          </span>
+          Call
+        </a>
+
+        <a class="circle-btn" href="https://wa.me/306900000000" target="_self">
+          <span class="circle-icon orange">
+            <svg viewBox="0 0 24 24">
+              <path d="M20 12a8 8 0 0 1-11.7 7.1L4 20l.9-4.3A8 8 0 1 1 20 12z"></path>
+              <path d="M9.8 9.3c.3 1.8 1.7 3.2 3.5 3.5"></path>
+            </svg>
+          </span>
+          WhatsApp
+        </a>
+
+        <a class="circle-btn" href="viber://chat?number=%2B306900000000">
+          <span class="circle-icon black">
+            <svg viewBox="0 0 24 24">
+              <path d="M8 4h8a4 4 0 0 1 4 4v4a4 4 0 0 1-4 4h-2l-4 4v-4H8a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4z"></path>
+              <path d="M9.5 9.5c.4 2.2 2.2 4 4.4 4.4"></path>
+              <path d="M13 8.5c.7.1 1.4.8 1.5 1.5"></path>
+            </svg>
+          </span>
+          Viber
+        </a>
+
+        <a class="circle-btn" href="sms:+306900000000">
+          <span class="circle-icon orange">
+            <svg viewBox="0 0 24 24">
+              <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"></path>
+            </svg>
+          </span>
+          SMS
+        </a>
+
+        <a class="circle-btn" href="mailto:info@example.com">
+          <span class="circle-icon mail">
+            <svg viewBox="0 0 24 24">
+              <path d="M4 4h16v16H4z"></path>
+              <path d="M22 6l-10 7L2 6"></path>
+            </svg>
+          </span>
+          Mail
+        </a>
+
+        <a class="circle-btn" href="https://www.instagram.com/" target="_self">
+          <span class="circle-icon mixed">
+            <svg viewBox="0 0 24 24">
+              <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+              <circle cx="12" cy="12" r="4"></circle>
+              <circle cx="17.5" cy="6.5" r="1"></circle>
+            </svg>
+          </span>
+          Instagram
+        </a>
+
+        <a class="circle-btn" href="https://www.tiktok.com/" target="_self">
+          <span class="circle-icon black">
+            <svg viewBox="0 0 24 24">
+              <path d="M14 3v10.5a4.5 4.5 0 1 1-4.5-4.5"></path>
+              <path d="M14 3c1 3.2 3.1 5 6 5"></path>
+            </svg>
+          </span>
+          TikTok
+        </a>
+
+        <a class="circle-btn" href="https://www.facebook.com/" target="_self">
+          <span class="circle-icon mixed">
+            <svg viewBox="0 0 24 24">
+              <path d="M15 8h2V4h-3a5 5 0 0 0-5 5v3H6v4h3v6h4v-6h3l1-4h-4V9a1 1 0 0 1 1-1z"></path>
+            </svg>
+          </span>
+          Facebook
+        </a>
+
+      </div>
+    </section>
+
+    <section class="info-section">
+      <div class="info-card">
+        <h2>Professional Package</h2>
+        <p>
+          Ιδανικό για επαγγελματίες και επιχειρήσεις που θέλουν ολοκληρωμένη παρουσίαση, άμεση επικοινωνία και social links σε μία NFC landing page.
+        </p>
+      </div>
+    </section>
+
+    <footer class="footer">
+      Powered by NFC Brelot • Jewel Art<br>
+      Instagram:
+      <a href="https://www.instagram.com/lazaros_jewelart" target="_self">@lazaros_jewelart</a>
+
+      <a class="client-cta" href="https://carbridgefr-glitch.github.io/test-profil-page/create-card.html" target="_self">
+        Θέλω κι εγώ τη δική μου ψηφιακή κάρτα
+      </a>
+    </footer>
+
+  </main>
+
+  <div class="install-bar">
+    <button class="install-btn" id="installButton">
+      Κράτησε την κάρτα στο κινητό σου
+    </button>
+  </div>
+
+  <div class="modal" id="installModal">
+    <div class="modal-box">
+      <h2 id="modalTitle">Κράτησε την κάρτα στο κινητό σου</h2>
+
+      <p id="modalText">
+        Μπορείς να εγκαταστήσεις την ψηφιακή κάρτα στο κινητό σου.
+      </p>
+
+      <div class="ios-steps" id="iosSteps">
+        <strong>Για iPhone:</strong><br>
+        1. Άνοιξε τη σελίδα με Safari.<br>
+        2. Πάτησε το κουμπί Share.<br>
+        3. Πάτησε “Add to Home Screen”.<br>
+        4. Πάτησε “Add”.
+      </div>
+
+      <button class="modal-action orange" id="androidInstallBtn" onclick="installApp()" style="display:none;">
+        Εγκατάσταση στο κινητό
+      </button>
+
+      <button class="modal-action secondary" onclick="downloadVCard()">
+        Αποθήκευση στις επαφές
+      </button>
+
+      <button class="close-btn" onclick="closeModal()">Κλείσιμο</button>
+    </div>
+  </div>
+
+  <script>
+    const BUSINESS_NAME = "Όνομα Επιχείρησης";
+    const BUSINESS_PHONE = "+306900000000";
+    const BUSINESS_PROFILE = "https://carbridgefr-glitch.github.io/professional-card/";
+
+    let deferredPrompt;
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("service-worker.js").catch(function () {});
+      });
+    }
+
+    window.addEventListener("beforeinstallprompt", function (event) {
+      event.preventDefault();
+      deferredPrompt = event;
+    });
+
+    document.getElementById("installButton").addEventListener("click", function () {
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      const isAndroid = /Android/i.test(navigator.userAgent);
+
+      const title = document.getElementById("modalTitle");
+      const text = document.getElementById("modalText");
+      const iosSteps = document.getElementById("iosSteps");
+      const androidInstallBtn = document.getElementById("androidInstallBtn");
+
+      iosSteps.style.display = "none";
+      androidInstallBtn.style.display = "none";
+
+      if (isIOS) {
+        title.innerText = "Αποθήκευση στο iPhone";
+        text.innerText = "Για να κρατήσεις την ψηφιακή κάρτα στο iPhone, ακολούθησε τα παρακάτω απλά βήματα.";
+        iosSteps.style.display = "block";
+      } else if (isAndroid) {
+        title.innerText = "Εγκατάσταση στο κινητό";
+        text.innerText = "Μπορείς να εγκαταστήσεις την ψηφιακή κάρτα στο κινητό σου.";
+        androidInstallBtn.style.display = "block";
+      } else {
+        title.innerText = "Κράτησε την κάρτα στο κινητό σου";
+        text.innerText = "Μπορείς να αποθηκεύσεις την επαφή στο κινητό σου, μαζί με το link της ψηφιακής κάρτας.";
+      }
+
+      document.getElementById("installModal").style.display = "flex";
+    });
+
+    async function installApp() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        closeModal();
+      } else {
+        alert("Αν δεν εμφανιστεί η εγκατάσταση, άνοιξε τη σελίδα με Chrome και επίλεξε Add to Home Screen.");
+      }
+    }
+
+    function closeModal() {
+      document.getElementById("installModal").style.display = "none";
+    }
+
+    async function shareProfile() {
+      const shareData = {
+        title: "Professional Digital Card",
+        text: "Δες την ψηφιακή κάρτα.",
+        url: BUSINESS_PROFILE
+      };
+
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+        } catch (error) {}
+      } else {
+        try {
+          await navigator.clipboard.writeText(BUSINESS_PROFILE);
+          alert("Το link αντιγράφηκε.");
+        } catch (error) {
+          alert(BUSINESS_PROFILE);
+        }
+      }
+    }
+
+    function downloadVCard() {
+      const vcard = `BEGIN:VCARD
+VERSION:3.0
+FN:${BUSINESS_NAME}
+ORG:${BUSINESS_NAME}
+TEL;TYPE=CELL:${BUSINESS_PHONE}
+URL:${BUSINESS_PROFILE}
+NOTE:Ψηφιακή κάρτα: ${BUSINESS_PROFILE}
+END:VCARD`;
+
+      const blob = new Blob([vcard], { type: "text/vcard;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download = "professional-digital-card-contact.vcf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>
