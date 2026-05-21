@@ -1,0 +1,22 @@
+{
+  "name": "Professional Digital Card",
+  "short_name": "Professional",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f97316",
+  "description": "Professional NFC digital landing page",
+  "icons": [
+    {
+      "src": "professional-profile.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "professional-profile.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
