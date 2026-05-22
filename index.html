@@ -9,6 +9,7 @@
   <meta name="theme-color" content="#f97316">
 
   <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="professional.png">
 
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Professional Card">
@@ -459,6 +460,53 @@
       font-weight: 700;
     }
 
+    .professional-includes {
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at top right, rgba(249,115,22,0.18), transparent 30%),
+        linear-gradient(135deg, #111111, #2d2d2d);
+      padding: 18px;
+      box-shadow: 0 16px 34px rgba(0,0,0,0.18);
+      color: #ffffff;
+      border: 1px solid rgba(249,115,22,0.45);
+    }
+
+    .professional-image {
+      width: 100%;
+      display: block;
+      border-radius: 18px;
+      margin-bottom: 16px;
+      background: #ffffff;
+      object-fit: contain;
+      box-shadow: 0 12px 26px rgba(0,0,0,0.22);
+    }
+
+    .professional-includes h2 {
+      margin: 0 0 12px;
+      color: #fed7aa;
+      font-size: 20px;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .professional-includes ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .professional-includes li {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 14px;
+      padding: 11px 12px;
+      font-size: 14px;
+      line-height: 1.4;
+      font-weight: 800;
+    }
+
     .footer {
       text-align: center;
       padding: 0 18px 30px;
@@ -572,7 +620,7 @@
       border: 0;
       border-radius: 12px;
       margin-top: 12px;
-      background: linear-gradient(135deg, #111111, #333333);
+      background: linear-gradient(135deg, var(--black), #333333);
       color: #ffffff;
       font-size: 15px;
       font-weight: 900;
@@ -829,8 +877,23 @@
       </div>
     </section>
 
+    <section class="info-section">
+      <div class="professional-includes">
+        <img src="professional.png" alt="Professional Package" class="professional-image">
+
+        <h2>Professional Package περιλαμβάνει</h2>
+        <ul>
+          <li>Επαγγελματικό landing page με φωτογραφία προφίλ ή logo.</li>
+          <li>Social links, επικοινωνία, website, Google Review και Google Map.</li>
+          <li>Δώρο NFC βραχιόλι με ενσωματωμένο το landing page του επαγγελματία.</li>
+          <li>Κουμπί αποθήκευσης της digital card στο κινητό.</li>
+          <li>Ιδανικό για επαγγελματίες που θέλουν πιο ολοκληρωμένη ψηφιακή παρουσία.</li>
+        </ul>
+      </div>
+    </section>
+
     <footer class="footer">
-      Powered by NFC Brelot • Jewel Art<br>
+      Powered by NFC Μπρελόκ • Jewel Art<br>
       Instagram:
       <a href="https://www.instagram.com/lazaros_jewelart" target="_self">@lazaros_jewelart</a>
 
